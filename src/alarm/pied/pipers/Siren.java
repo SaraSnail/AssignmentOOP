@@ -1,14 +1,14 @@
 package alarm.pied.pipers;
 
 public class Siren {
-    private boolean flashing = false;
+    private boolean flashing;
 
     public Siren(boolean flashing) {
         this.flashing = flashing;
     }
 
     public void alarmLamp(){
-        if (flashing){
+        if (isFlashing()){
             for (int i = 0; i < 10; i++) {
                 System.out.print("* ");
             }

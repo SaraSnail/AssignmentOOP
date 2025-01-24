@@ -5,14 +5,16 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
-//import en för sig eller hela util paketet bättre?
 
 public class CentralProcessingUnit implements Alarms {
     private boolean on;
     private String name;
-    private boolean simulate; //Behöver inte ange simulate eller alarmOn när man skapar CPU, de är inbakade här så de alltid fungerar
-    private boolean alarmsOn;
     private final Room belongsTo;
+
+    //Dessa behöver inte anges för att skapa en CPU
+    private boolean simulate;
+    private boolean alarmsOn;
+
 
     public CentralProcessingUnit(boolean on, String name, Room belongsTo) {
         this.on = on;
@@ -20,77 +22,84 @@ public class CentralProcessingUnit implements Alarms {
         this.belongsTo = belongsTo;
     }
 
+    //Listor för rummen och sirenerna
+    private List<Room> roomList = new ArrayList<>();
+    private List<Siren>sirenList = new ArrayList<>();
 
-    public void keypad(){
+
+    //Metoden keypad
+    public void keypad(Room garage, Room livingRoom, Room hall){//Skickar med rummen som skapades i main
 
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
         //Skapar rum och sirener
-        Room garage = new Room("garage");
-        Room livingRoom = new Room("living room");
         Room kitchen = new Room("kitchen");
         Room bedroom1 = new Room("first bedroom");
         Room bedroom2 = new Room("second bedroom");
         Room bedroom3 = new Room("third bedroom");
         Room bedroom4 = new Room("fourth bedroom");
         Room bedroom5 = new Room("fifth bedroom");
-        Room hall = new Room("hall");
         Room garden = new Room("garden");
 
         Siren siren = new Siren(false);
         Siren siren2 = new Siren(false);
 
+        //Skapar String för de upprepande detektorerna. Kan då också jämföra med dessa senare och mindre risk för stavfel
+        String window = "window";
+        String motion = "motion";
+        String smokeDetector = "smoke detector";
+        String door = "door";
 
         //Skapar detektorer i varje rum
         //Garage
-        garage.getDetectorsList().add(new Detectors(false,"window",false));
-        garage.getDetectorsList().add(new Detectors(false,"garage door",false));
-        garage.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        garage.getDetectorsList().add(new Detectors(false,window,false));
+        garage.getDetectorsList().add(new Detectors(false,"garage " + door,false));
+        garage.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
         //Living room
-        livingRoom.getDetectorsList().add(new Detectors(false,"window",false));
-        livingRoom.getDetectorsList().add(new Detectors(false,"window",false));
-        livingRoom.getDetectorsList().add(new Detectors(false,"sliding door",false));
-        livingRoom.getDetectorsList().add(new Detectors(false,"motion",false));
-        livingRoom.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        livingRoom.getDetectorsList().add(new Detectors(false,window,false));
+        livingRoom.getDetectorsList().add(new Detectors(false,window,false));
+        livingRoom.getDetectorsList().add(new Detectors(false,"sliding " + door,false));
+        livingRoom.getDetectorsList().add(new Detectors(false,window,false));
+        livingRoom.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
         //Kitchen
-        kitchen.getDetectorsList().add(new Detectors(false,"window",false));
-        kitchen.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        kitchen.getDetectorsList().add(new Detectors(false,window,false));
+        kitchen.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
         //Bedroom1
-        bedroom1.getDetectorsList().add(new Detectors(false,"window",false));
-        bedroom1.getDetectorsList().add(new Detectors(false,"window",false));
-        bedroom1.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        bedroom1.getDetectorsList().add(new Detectors(false,window,false));
+        bedroom1.getDetectorsList().add(new Detectors(false,window,false));
+        bedroom1.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
         //Bedroom2
-        bedroom2.getDetectorsList().add(new Detectors(false,"window",false));
-        bedroom2.getDetectorsList().add(new Detectors(true,"motion",false));
-        bedroom2.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        bedroom2.getDetectorsList().add(new Detectors(false,window,false));
+        bedroom2.getDetectorsList().add(new Detectors(true,motion,false));
+        bedroom2.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
         //Bedroom3
-        bedroom3.getDetectorsList().add(new Detectors(false,"window",false));
-        bedroom3.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        bedroom3.getDetectorsList().add(new Detectors(false,window,false));
+        bedroom3.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
         //Bedroom4
-        bedroom4.getDetectorsList().add(new Detectors(false,"window",false));
-        bedroom4.getDetectorsList().add(new Detectors(false,"window",false));
-        bedroom4.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        bedroom4.getDetectorsList().add(new Detectors(false,window,false));
+        bedroom4.getDetectorsList().add(new Detectors(false,window,false));
+        bedroom4.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
         //Bedroom5
-        bedroom5.getDetectorsList().add(new Detectors(false,"window",false));
-        bedroom5.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        bedroom5.getDetectorsList().add(new Detectors(false,window,false));
+        bedroom5.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
         //Hall
-        hall.getDetectorsList().add(new Detectors(false, "window", false));
-        hall.getDetectorsList().add(new Detectors(false, "front door", false));
-        hall.getDetectorsList().add(new MotionDetector(false,"motion",false));
-        hall.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        hall.getDetectorsList().add(new Detectors(false, window, false));
+        hall.getDetectorsList().add(new Detectors(false, "front " + door, false));
+        hall.getDetectorsList().add(new Detectors(false,motion,false));
+        hall.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
         //Garden
-        garden.getDetectorsList().add(new Detectors(false,"motion",false));
-        garden.setSmokeDetector(new SmokeDetector(true,"smoke detector",false));
+        garden.getDetectorsList().add(new Detectors(false,motion,false));
+        garden.setSmokeDetector(new SmokeDetector(true,smokeDetector,false));
 
 
         //Lägger in rummen i en lista
@@ -110,9 +119,10 @@ public class CentralProcessingUnit implements Alarms {
         getSirenList().add(siren2);
 
 
-
         while (on){
-            System.out.println(belongsTo.getSortOfRoom().toUpperCase());
+            drawLine();
+            System.out.println(getName().toUpperCase() + ":");
+            System.out.println(getBelongsTo().getSortOfRoom().toUpperCase());
             System.out.println("Alarm system");
             drawLine();
 
@@ -126,14 +136,14 @@ public class CentralProcessingUnit implements Alarms {
                 case 1://Reset
                     System.out.println("Reset");
                     System.out.println("Turning [OFF] the alarms");
-                    alarmsOn = false;
+                    setAlarmsOn(false);
                     sirenOff(false);
                     turnOff(getRoomList());
 
                     break;
                 case 2://Simulate
-                    simulate = true;
-                    while (simulate){
+                    setSimulate(true);
+                    while (isSimulate()){
                         drawLine();
                         System.out.println("Simulate");
                         drawLine();
@@ -160,7 +170,7 @@ public class CentralProcessingUnit implements Alarms {
                                 Room selectedRoom = getRoomList().get(randomIndexRoom2);
 
                                 //Loopar så att rummet inte kan vara "garden". Vill inte att den blir likadan som simMovementAtPool
-                                while (Objects.equals(selectedRoom.getSortOfRoom(), "garden")){
+                                while (Objects.equals(selectedRoom.getSortOfRoom(), garden.getSortOfRoom())){
                                         randomIndexRoom2 = random.nextInt(getRoomList().size());
                                         selectedRoom = getRoomList().get(randomIndexRoom2);
                                     }
@@ -171,7 +181,7 @@ public class CentralProcessingUnit implements Alarms {
 
                                 String breakinRoom = selectedRoom.getSortOfRoom();
 
-                                simBreakIn(breakinRoom, selectInRoom);
+                                simBreakIn(breakinRoom, selectInRoom, motion);
                                 break;
 
 
@@ -180,11 +190,16 @@ public class CentralProcessingUnit implements Alarms {
                                 for (int i = 0; i < getRoomList().size(); i++) {
                                     Room tempRoom = getRoomList().get(i);
 
-                                    if(Objects.equals(tempRoom.getSortOfRoom(), "garden")){
+                                    //Vill få fram bara "garden"
+                                    if(Objects.equals(tempRoom.getSortOfRoom(), garden.getSortOfRoom())){
                                         for (int j = 0; j < tempRoom.getDetectorsList().size(); j++) {
-                                            Detectors motion = tempRoom.getDetectorsList().get(j);
-                                            if(Objects.equals(motion.getKindOfDetector(), "motion")){
-                                                simMovementAtPool(motion,tempRoom);
+
+                                            //Vill få fram motion detektorn
+                                            Detectors isMotion = tempRoom.getDetectorsList().get(j);
+                                            if(Objects.equals(isMotion.getKindOfDetector(), motion)){
+
+                                                //Skickar in dem i metoden simMovementAtPool
+                                                simMovementAtPool(isMotion,tempRoom);
                                             }
                                         }
 
@@ -196,7 +211,7 @@ public class CentralProcessingUnit implements Alarms {
 
                             case 4://Back
                                 System.out.println("Back");
-                                simulate = false;
+                                setSimulate(false);
                                 break;
 
                             default:
@@ -208,14 +223,16 @@ public class CentralProcessingUnit implements Alarms {
                     break;
 
                 case 3://Shut off alarms detections
+                    drawLine();
                     System.out.print("The alarm is: ");
-                    if (alarmsOn) {
+                    if (isAlarmsOn()) {
                         System.out.println("[ON]");
                     }
-                    else if (!alarmsOn) {
+                    else if (!isAlarmsOn()) {
                         System.out.println("[OFF]");
                     }
-                    else {
+
+                    else {//Skulle kunna ta bort denna, men... I fall att
                         error();
                     }
 
@@ -226,7 +243,8 @@ public class CentralProcessingUnit implements Alarms {
                     switch (scanner.nextInt()){
                         case 1://ON
                             System.out.println("Turning on detection alarms");
-                            alarmsOn = true;
+                            drawLine();
+                            setAlarmsOn(true);
 
                             for (int i = 0; i < getRoomList().size(); i++) {
                                 Room tempRoom = getRoomList().get(i);
@@ -243,7 +261,8 @@ public class CentralProcessingUnit implements Alarms {
 
                         case 2://OFF
                             System.out.println("Shutting off detection alarms");
-                            alarmsOn = false;
+                            drawLine();
+                            setAlarmsOn(false);
 
                             turnOff(getRoomList());
 
@@ -258,7 +277,7 @@ public class CentralProcessingUnit implements Alarms {
 
                 case 4://Turn off console
                     System.out.println("Turning off...");
-                    on = false;
+                    setOn(false);
                     break;
 
                 default:
@@ -289,22 +308,22 @@ public class CentralProcessingUnit implements Alarms {
     public void simFire(Room room){
         alarmDetected();
         System.out.println("The fire is in the " + room.getSortOfRoom() + "!");
-        room.getSmokeDetector().setDetectedSomething(true);
-        sirenOff(false);
+        room.getSmokeDetector().setDetectedSomething(true);//hämtar smoke detector från rummet som skickades med
+        sirenOff(false);//så sirenen inte är på när de andra sim körs även om alarmet inte är på
 
 
     }
 
 
     @Override
-    public void simBreakIn(String breakinRoom, Detectors detector){
-        if (!alarmsOn) {
+    public void simBreakIn(String breakinRoom, Detectors detector, String motion){
+        if (!isAlarmsOn()) {
             System.out.println("The alarm isn't on");
             sirenOff();
 
         }
         else {
-            if(!Objects.equals(detector.getKindOfDetector(), "motion")){
+            if(!Objects.equals(detector.getKindOfDetector(), motion)){
                 alarmDetected();
                 detector.setDetectedSomething(true);
                 System.out.println("Someone is breaking in through the " + detector.getKindOfDetector() + " in the " + breakinRoom + "!");
@@ -322,7 +341,7 @@ public class CentralProcessingUnit implements Alarms {
 
     @Override
     public void simMovementAtPool(Detectors detector, Room room){
-        if (!alarmsOn) {
+        if (!isAlarmsOn()) {
             System.out.println("The alarm isn't on");
             sirenOff();
 
@@ -335,8 +354,8 @@ public class CentralProcessingUnit implements Alarms {
     }
 
 
-    @Override
-    public void turnOff(List roomList){
+
+    private void turnOff(List <Room> roomList){
 
         for (int i = 0; i < getRoomList().size(); i++) {
             Room tempRoom = getRoomList().get(i);
@@ -352,38 +371,37 @@ public class CentralProcessingUnit implements Alarms {
     }
 
 
-    @Override
-    public void sirenOff(){
+
+    private void sirenOff(){
         for (int i = 0; i < getSirenList().size(); i++) {
             getSirenList().get(i).alarmLamp();
         }
     }
-    @Override
-    public void sirenOff(boolean turnOff){
+
+    private void sirenOff(boolean turnOn){
         for (int i = 0; i < getSirenList().size(); i++) {
-            getSirenList().get(i).setFlashing(turnOff);
+            getSirenList().get(i).setFlashing(turnOn);
         }
     }
 
 
 
 
-//Har dessa så jag inte behöver skriva ut samma sak flera gånger
-    public void drawLine(){
+//Metoder för enklare utskrifter
+    private void drawLine(){
         System.out.println("------------------");
     }
 
-    public void error(){
+    private void error(){
         System.out.println("Error. This choice does not exist. Try again");
     }
-    public void enterScanner(){
+    private void enterScanner(){
         System.out.print("Enter: ");
     }
 
 
-    //Lista på Sirener
-    private List<Siren>sirenList = new ArrayList<>();
 
+    //Getters och setters
     public List<Siren>getSirenList(){
         return sirenList;
     }
@@ -391,18 +409,12 @@ public class CentralProcessingUnit implements Alarms {
         this.sirenList = sirenList;
     }
 
-
-    //Listan på rum
-    private List<Room> roomList = new ArrayList<>();
-
     public List<Room> getRoomList() {
         return roomList;
     }
     public void setRoomList(List<Room> roomList) {
         this.roomList = roomList;
     }
-
-
 
     public boolean isOn() {
         return on;
@@ -428,5 +440,15 @@ public class CentralProcessingUnit implements Alarms {
         this.simulate = simulate;
     }
 
+    public Room getBelongsTo() {
+        return belongsTo;
+    }
 
+    public boolean isAlarmsOn() {
+        return alarmsOn;
+    }
+
+    public void setAlarmsOn(boolean alarmsOn) {
+        this.alarmsOn = alarmsOn;
+    }
 }

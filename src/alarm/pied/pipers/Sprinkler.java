@@ -11,10 +11,9 @@ public class Sprinkler extends Detectors{
     }
 
 
-
     public void activate(){
-        setDetectedSomething(true);
-        System.out.println(", sprinkler activated: " + isOn());
+        setDetectedSomething(true);//Sprinkler detekterar något
+        System.out.println(", "+ getKindOfDetector() + " activated: " + isOn());
         for (int i = 0; i < 15; i++) {
             System.out.print("^");
         }

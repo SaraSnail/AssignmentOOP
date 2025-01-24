@@ -7,11 +7,7 @@ public interface Alarms {
     void alarmDetected();
 
     void simFire(Room room);
-    void simBreakIn(String room, Detectors detector);
+    void simBreakIn(String room, Detectors detector, String motion);
     void simMovementAtPool(Detectors detector, Room room);
-
-    void turnOff(List roomList);
-
-    void sirenOff();
-    void sirenOff(boolean turnOff);
+    
 }

@@ -7,43 +7,42 @@ public class Main {
 
         System.out.println("Assignment OOP, course 1");
 
+
         //Skapar rum med knappstats
         Room garage = new Room("garage");
         Room livingRoom = new Room("living room");
         Room hall = new Room("hall");
 
-        CentralProcessingUnit central1 = new CentralProcessingUnit(true, "central processing unit", true,garage);
-        CentralProcessingUnit central2 = new CentralProcessingUnit(true, "central processing unit", true,livingRoom);
-        CentralProcessingUnit central3 = new CentralProcessingUnit(true, "central processing unit", true,hall);
+        //Skapar knappsatser
+        CentralProcessingUnit central1 = new CentralProcessingUnit(true, "central processing unit", garage);
+        CentralProcessingUnit central2 = new CentralProcessingUnit(true, "central processing unit", livingRoom);
+        CentralProcessingUnit central3 = new CentralProcessingUnit(true, "central processing unit", hall);
 
 
         Scanner scanner = new Scanner(System.in);
-        boolean systemOn = true;
+        boolean systemLoop = true;
 
-        while (systemOn){
-            drawLine();
-            System.out.println("Ange rum");
+        while (systemLoop){
+            System.out.println("------------------");
+            System.out.println("Choose a room");
             System.out.println("1. Garage");
             System.out.println("2. Living room");
             System.out.println("3. Hall");
             System.out.print("Enter: ");
             switch (scanner.nextInt()){
                 case 1: //Garage
-                    drawLine();
-                    central1.keypad();
-                    systemOn = false;
+                    central1.keypad(garage, livingRoom, hall);
+                    systemLoop = false;
                     break;
 
                 case 2: //Living room
-                    drawLine();
-                    central2.keypad();
-                    systemOn = false;
+                    central2.keypad(garage, livingRoom, hall);
+                    systemLoop = false;
                     break;
 
                 case 3: //Hall
-                    drawLine();
-                    central3.keypad();
-                    systemOn = false;
+                    central3.keypad(garage, livingRoom, hall);
+                    systemLoop = false;
                     break;
                 default:
                     System.out.println("Error. This choice does not exist. Try again");
@@ -52,10 +51,5 @@ public class Main {
 
 
     }
-
-    public static void drawLine(){
-        System.out.println("------------------");
-    }
-
 
 }
